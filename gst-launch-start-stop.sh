@@ -1,15 +1,26 @@
 #!/bin/sh
 
-# Capture video from the Hauppauge HDPVR for ~25 seconds; then stop and repeat.
-# This is to attempt to reproduce an HDPVR lock-up.
+#/ Usage: gst-launch-start-stop.sh <video-device>
+#/
+#/ Captures video from the Hauppauge HDPVR for ~25 seconds; stops and repeats.
+#/ This is to attempt to reproduce an HDPVR lock-up.
+#/
+#/ Arguments:
+#/
+#/   video-device     The device node for the HDPVR to test, e.g. /dev/video1
+
+usage() { grep '^#/' "$0" | cut -c4-; }  # Print the above usage message.
+
+[ $# -eq 1 ] || { usage >&2; exit 1; }
+dev="$1"
 
 timestamp() { date '+%b %d %H:%M:%S'; }
 
 while \
     echo "$(timestamp) gst-launch started"; \
     gst-launch -eq \
-        v4l2src num-buffers=5000 ! mpegtsdemux ! video/x-h264 ! decodebin2 ! \
-        ffmpegcolorspace ! fakesink sync=false
+        v4l2src num-buffers=5000 "device=$dev" ! mpegtsdemux ! video/x-h264 ! \
+        decodebin2 ! ffmpegcolorspace ! fakesink sync=false
 do
    echo "$(timestamp) gst-launch ended"
    sleep 5
