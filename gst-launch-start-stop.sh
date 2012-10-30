@@ -16,12 +16,15 @@ dev="$1"
 
 timestamp() { date '+%b %d %H:%M:%S'; }
 
-while \
-    echo "$(timestamp) gst-launch started"; \
-    gst-launch -eq \
+while true; do
+    echo "$(timestamp) gst-launch started"
+    timeout 60s gst-launch -eq \
         v4l2src num-buffers=5000 "device=$dev" ! mpegtsdemux ! video/x-h264 ! \
         decodebin2 ! ffmpegcolorspace ! fakesink sync=false
-do
-   echo "$(timestamp) gst-launch ended"
-   sleep 5
+    ret=$?
+    case $ret in
+        124) echo "$(timestamp) gst-launch timed out";;
+        *)   echo "$(timestamp) gst-launch returned $ret";;
+    esac
+    sleep 5
 done
