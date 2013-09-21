@@ -45,11 +45,12 @@ Results
 We tried all sorts of experiments: Adding a better heatsink to the H.264
 encoder chip; adding a heatsink to the A/D chip; different kernel versions;
 multiple HD PVRs connected to a single PC versus a single one. The only
-significant improvement we found was from removing the lid and `adding fans`_
-directly over the circuit board, but this doesn't cure the problem completely,
-it only increases the time-to-failure. We've measured the surface temperature
-of the encoder chip's heatsink, and of the A/D chip, and neither one was ever
-observed to exceed 40°C (with the fan); but the HD PVR still fails.
+significant improvement we found was from removing the lid and `adding fans
+<hdpvr-fan.jpg>`_ directly over the circuit board, but this doesn't cure the
+problem completely, it only increases the time-to-failure. We've measured the
+surface temperature of the encoder chip's heatsink, and of the A/D chip, and
+neither one was ever observed to exceed 40°C (with the fan); but the HD PVR
+still fails.
 
 Our measurements:
 
